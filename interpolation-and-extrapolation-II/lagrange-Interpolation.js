@@ -19,11 +19,11 @@ function lagrange_interpolation(xi,yi,x){
     for(let i=0;i<math.size(yi);i++){
         y[i] = l[i] * yi[i];
         temp += y[i];
-    }console.log("y = "+temp.toFixed(6));
+    }console.log("y = "+y+"\n  = "+temp);
 }
 
 let xi = [0,20000,40000,60000,80000];
 let yi = [9.81,9.7487,9.6879,9.6879,9.5682];
 let x = 42000;
 
-lagrange_interpolation(xi,yi,x) 
+lagrange_interpolation(xi,yi,x)
