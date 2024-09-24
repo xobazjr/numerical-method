@@ -25,23 +25,31 @@ function lagrange_interpolation(xy,x){
 
 let x = 42000;
 
-let linear_interpolation = [
-    {x: 0, y: 9.81},
-    {x: 80000, y: 9.5682}
-]
-
-let quadratic_interpolation = [
-    {x: 0, y: 9.81},
-    {x: 40000, y: 9.6879},
-    {x: 80000, y: 9.5682}
-]
-
-let polynomial_interpolation = [
+let point = [
     {x: 0, y: 9.81},
     {x: 20000, y: 9.7487},
     {x: 40000, y: 9.6879},
     {x: 60000, y: 9.6879},
     {x: 80000, y: 9.5682}
+]
+
+let linear_interpolation = [
+    {x: point[0].x, y: point[0].y},
+    {x: point[4].x, y: point[4].y}
+]
+
+let quadratic_interpolation = [
+    {x: point[0].x, y: point[0].y},
+    {x: point[2].x, y: point[2].y},
+    {x: point[4].x, y: point[4].y}
+]
+
+let polynomial_interpolation = [
+    {x: point[0].x, y: point[0].y},
+    {x: point[1].x, y: point[1].y},
+    {x: point[2].x, y: point[2].y},
+    {x: point[3].x, y: point[3].y},
+    {x: point[4].x, y: point[4].y}
 ]
 
 console.log("linear interpolation = "+lagrange_interpolation(linear_interpolation,x).toFixed(6))
