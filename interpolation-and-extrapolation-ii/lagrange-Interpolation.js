@@ -1,29 +1,49 @@
 const math = require("mathjs");
 
-function lagrange_interpolation(xi,yi,x){
-    let l = math.clone(xi);
+function lagrange_interpolation(xy,x){
+    let l = math.clone(xy);
     //where Li(x)
-    for(let i=0;i<math.size(xi);i++){
+    for(let i=0;i<math.size(xy);i++){
         let temp = 1;
-        for(let j=0;j<math.size(xi);j++){
+        for(let j=0;j<math.size(xy);j++){
             if(j!=i){
-                temp *= (x - xi[j]) / (xi[i] - xi[j]);
+                temp *= (x - xy[j].x) / (xy[i].x - xy[j].x);
             }
         }
-        l[i] = temp;
+        l[i].x = temp;
     }
 
-    let y = math.clone(yi);
+    let y = math.clone(xy);
     let temp = 0;
     //General Form f(x)
-    for(let i=0;i<math.size(yi);i++){
-        y[i] = l[i] * yi[i];
-        temp += y[i];
-    }console.log("y = "+y+"\n  = "+temp);
+    for(let i=0;i<math.size(xy);i++){
+        temp += l[i].x * xy[i].y;
+    }
+
+    return temp;
 }
 
-let xi = [0,20000,40000,60000,80000];
-let yi = [9.81,9.7487,9.6879,9.6879,9.5682];
 let x = 42000;
 
-lagrange_interpolation(xi,yi,x)
+let linear_interpolation = [
+    {x: 0, y: 9.81},
+    {x: 80000, y: 9.5682}
+]
+
+let quadratic_interpolation = [
+    {x: 0, y: 9.81},
+    {x: 40000, y: 9.6879},
+    {x: 80000, y: 9.5682}
+]
+
+let polynomial_interpolation = [
+    {x: 0, y: 9.81},
+    {x: 20000, y: 9.7487},
+    {x: 40000, y: 9.6879},
+    {x: 60000, y: 9.6879},
+    {x: 80000, y: 9.5682}
+]
+
+console.log("linear interpolation = "+lagrange_interpolation(linear_interpolation,x).toFixed(6))
+console.log("quadratic interpolation = "+lagrange_interpolation(quadratic_interpolation,x).toFixed(6))
+console.log("polynomial interpolation = "+lagrange_interpolation(polynomial_interpolation,x).toFixed(6))
