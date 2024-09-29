@@ -1,7 +1,6 @@
 const math = require("mathjs");
 
 function lagrange_interpolation(xy,x){
-    let l = math.clone(xy);
     //where Li(x)
     for(let i=0;i<math.size(xy);i++){
         let temp = 1;
@@ -10,14 +9,13 @@ function lagrange_interpolation(xy,x){
                 temp *= (x - xy[j].x) / (xy[i].x - xy[j].x);
             }
         }
-        l[i].x = temp;
+        xy[i].l = temp;
     }
 
-    let y = math.clone(xy);
     let temp = 0;
     //General Form f(x)
     for(let i=0;i<math.size(xy);i++){
-        temp += l[i].x * xy[i].y;
+        temp += xy[i].l * xy[i].y;
     }
 
     return temp;
