@@ -26,7 +26,7 @@ function linear_regression(points,x,y){
     let a0,a1;
 
     a0 = (sum(y) * pow_sum(x) - multiple_sum(x,y) * sum(x)) / (points.length * pow_sum(x) - Math.pow(sum(x),2));
-    a1 = (9 * multiple_sum(x,y) - sum(x) * sum(y)) / (9 * pow_sum(x) - Math.pow(sum(x),2));
+    a1 = (points.length * multiple_sum(x,y) - sum(x) * sum(y)) / (points.length * pow_sum(x) - Math.pow(sum(x),2));
 
     console.log("g(x) = "+parseFloat(a0).toFixed(6)+" + "+parseFloat(a1).toFixed(6)+"x");
 }
