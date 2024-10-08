@@ -28,8 +28,8 @@ function linear_regression(points,x,y,fx){
     a0 = (sum(y) * pow_sum(x) - multiple_sum(x,y) * sum(x)) / (points.length * pow_sum(x) - Math.pow(sum(x),2));
     a1 = (points.length * multiple_sum(x,y) - sum(x) * sum(y)) / (points.length * pow_sum(x) - Math.pow(sum(x),2));
 
-    console.log("f("+fx+") = "+parseFloat(a0).toFixed(6)+" + "+parseFloat(a1).toFixed(6)+"x");
-    console.log("f("+fx+") = "+(a0 + (a1 * fx)).toFixed(6));
+    return "f("+fx+") = "+parseFloat(a0).toFixed(6)+" + "+parseFloat(a1).toFixed(6)+"x"+"\n"+
+           "f("+fx+") = "+((a0 + (a1 * fx)).toFixed(6));
 }
 
 let points = [
@@ -48,11 +48,4 @@ let x = points.map(points => points.x);
 let y = points.map(points => points.y);
 let fx = 65;
 
-linear_regression(points,x,y,fx);
-
-
-
-
-
-
-
+console.log(linear_regression(points,x,y,fx));

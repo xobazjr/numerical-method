@@ -1,30 +1,29 @@
 const math = require('mathjs'); //import math.js
 
-function polynomial_regression(x,y){
-    let sumx=0,sumx2=0,sumx3=0,sumx4=0,sumy=0,sumxy=0,sumx2y=0,n=x.length;
+function polynomial_regression(x,y,fx){
+    let sumx2=0,sumx3=0,sumx4=0,sumxy=0,sumx2y=0,n=x.length;
 
     for(let i=0;i<n;i++){ 
-        sumx += x[i];
         sumx2 += Math.pow(x[i],2);
         sumx3 += Math.pow(x[i],3);
         sumx4 += Math.pow(x[i],4);
-        sumy += y[i];
         sumxy += x[i] * y[i];
         sumx2y += Math.pow(x[i],2) * y[i];
     }
 
     let A = [
-        [n, sumx,sumx2],
-        [sumx,sumx2,sumx3],
+        [n, math.sum(x),sumx2],
+        [math.sum(x),sumx2,sumx3],
         [sumx2,sumx3,sumx4],
     ]
     A = math.inv(A); //matrix inverse
 
-    let B = [sumy,sumxy,sumx2y]; 
+    let B = [math.sum(y),sumxy,sumx2y]; 
 
-    let a = math.multiply(A,B); //multiply matrix
+    let a = math.multiply(A,B); //multiply matrix A and B
 
-    return "f(x) = "+parseFloat(a[0]).toFixed(6)+" + "+parseFloat(a[1]).toFixed(6)+"x"+" + "+parseFloat(a[2]).toFixed(6)+"x^2";
+    return "f(x) = "+parseFloat(a[0]).toFixed(6)+" + "+parseFloat(a[1]).toFixed(6)+"x"+" + "+parseFloat(a[2]).toFixed(6)+"x^2"+"\n"+
+           "f("+fx+") = "+parseFloat((a[0] + a[1] * fx + a[2] * Math.pow(fx,2))).toFixed(6);
 }
 
 let points = [
@@ -41,5 +40,6 @@ let points = [
 
 let x = points.map(points => points.x);
 let y = points.map(points => points.y);
+let fx = 65;
 
-console.log(polynomial_regression(x,y));
+console.log(polynomial_regression(x,y,fx));
