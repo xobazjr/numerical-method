@@ -1,10 +1,4 @@
-function sum(x){
-    let sum=0;
-    for(let i=0;i<x.length;i++){
-        sum += x[i];
-    }
-    return sum;
-}
+const math = require('mathjs');
 
 function pow_sum(x){
     let sum=0;
@@ -14,22 +8,19 @@ function pow_sum(x){
     return sum;
 }
 
-function multiple_sum(x,y){
-    let sum=0;
-    for(let i=0;i<x.length;i++){
-        sum += x[i] * y[i];
-    }
-    return sum;
-}
-
 function linear_regression(points,x,y,fx){
-    let a0,a1;
+    let A = [
+        [points.length,math.sum(x)],
+        [math.sum(x),pow_sum(x)]
+    ];
+    A = math.inv(A)
 
-    a0 = (sum(y) * pow_sum(x) - multiple_sum(x,y) * sum(x)) / (points.length * pow_sum(x) - Math.pow(sum(x),2));
-    a1 = (points.length * multiple_sum(x,y) - sum(x) * sum(y)) / (points.length * pow_sum(x) - Math.pow(sum(x),2));
+    let B = [math.sum(y),math.multiply(x,y)];
 
-    return "f("+fx+") = "+parseFloat(a0).toFixed(6)+" + "+parseFloat(a1).toFixed(6)+"x"+"\n"+
-           "f("+fx+") = "+((a0 + (a1 * fx)).toFixed(6));
+    let a = math.multiply(A,B);
+
+    return "f("+fx+") = "+parseFloat(a[0]).toFixed(6)+" + "+parseFloat(a[1]).toFixed(6)+"x"+"\n"+
+           "f("+fx+") = "+((a[0] + (a[1] * fx)).toFixed(6));
 }
 
 let points = [
