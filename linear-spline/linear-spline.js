@@ -1,19 +1,33 @@
-const math = require('mathjs');
+const math = require("mathjs");
 
-function linear_spline(x,y,n){
+function linear_spline(points, x){
+    let m = math.clone(points);
+    
+    for(let i=1;i<points.length;i++){
+        let dx = points[i].x - points[i-1].x;
+        
+        if(dx === 0){
+            return null;
+        }
 
-    for(let i=1;i<x.length;i++){
-        let fx = y[i-1] + ((y[i] - y[i-1]) / (x[i] - x[i-1])) * (n - x[i-1]); // yi + ((y[i] - y[i-1]) / (x[i] - x[i-1])) * 4.5 - x[i-1] if i === 1
-        if(n >= x[i-1] && n <= x[i]){
-            return parseFloat(fx).toFixed(6);
+        m[i-1].slope = (points[i].y - points[i-1].y) / dx;
+
+        if(x >= points[i-1].x && x <= points[i].x){
+            return parseFloat(points[i-1].y + m[i-1].slope * (x - points[i-1].x)).toFixed(6);
         }
     }
 
     return null;
 }
 
-let x = [2,4,6,8,10];
-let y = [9.5,8.0,10.5,39.5,72.5];
-let n = 4.5;
+let points = [
+    {x: 2, y: 9.5},
+    {x: 4, y: 8.0},
+    {x: 6, y: 10.5},
+    {x: 8, y: 39.5},
+    {x: 10, y: 72.5}
+];
 
-console.log(linear_spline(x,y,n));
+let x = 4.5;
+
+console.log(linear_spline(points, x));
