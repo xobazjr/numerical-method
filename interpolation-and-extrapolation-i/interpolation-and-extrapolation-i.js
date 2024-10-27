@@ -1,44 +1,50 @@
-const math = require('mathjs');
+function NewtonDividedMethods() {
+    const x = 46348;
+    const points = [
+        { x: 0, y: 9.81 },
+        { x: 40000, y: 9.6879 },
+        { x: 80000, y: 9.5682 }
+    ];
 
-function interpolation_and_extrapolation_i(points,n){
-    let sum = 0;
-
-    for(let i=0;i<points.length;i++){
-        let term = points[i].y;
-        for(let j=0;j<points.length;j++){
-            if(j !== i){
-                term *= (n - points[j].x) / (points[i].x - points[j].x); 
-            }
+    const result = {
+        result: 0,
+        iterations: [],
+        statusCode: 400
+    };
+    
+    // Step 1: Initialize coefficients array
+    let C = points.map((point) => point.y);
+    
+    // Step 2: Calculate divided differences
+    for (let i = 1; i < points.length; i++) {
+        for (let j = points.length - 1; j >= i; j--) {
+            C[j] = (C[j] - C[j - 1]) / (points[j].x - points[j - i].x);
         }
-        sum += term;
     }
-
-    return parseFloat(sum.toFixed(6));
+    
+    // Step 3: Apply the Newton divided difference formula
+    for (let i = 0; i < points.length; i++) {
+        let sum = C[i];
+        let MutiOfSubtract = [1];
+        
+        for (let j = 0; j < i; j++) {
+            MutiOfSubtract.push(x - points[j].x);
+            sum *= (x - points[j].x);
+        }
+        
+        result.iterations.push({
+            C: C[i],
+            MutiOfSubtract: MutiOfSubtract,
+            sum: sum
+        });
+        
+        result.result += sum;
+    }
+    
+    result.statusCode = 200;
+    console.log(result);
+    return result;
 }
 
-let x = [0,20000,40000,60000,80000];
-let y = [9.81,9.7487,9.6879,9.6879,9.5682];
-let n = 46348;
-
-let linear_interpolation = [
-    {x: x[0], y: y[0]},
-    {x: x[4], y: y[4]},
-];
-
-let quadratic_interpolation = [
-    {x: x[0],y: y[0]},
-    {x: x[2],y: y[2]},
-    {x: x[4],y: y[4]}
-];
-
-let polynomial_interpolation = [
-    {x: x[0],y: y[0]},
-    {x: x[1],y: y[1]},
-    {x: x[2],y: y[2]},
-    {x: x[3],y: y[3]},
-    {x: x[4],y: y[4]}
-];
-
-console.log(interpolation_and_extrapolation_i(linear_interpolation,n));
-console.log(interpolation_and_extrapolation_i(quadratic_interpolation,n));
-console.log(interpolation_and_extrapolation_i(polynomial_interpolation,n));
+// Run the function
+NewtonDividedMethods();
