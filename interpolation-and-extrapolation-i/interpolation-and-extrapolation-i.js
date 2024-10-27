@@ -2,7 +2,9 @@ function NewtonDividedMethods() {
     const x = 46348;
     const points = [
         { x: 0, y: 9.81 },
+        { x: 20000, y: 9.7487 },
         { x: 40000, y: 9.6879 },
+        { x: 60000, y: 9.6879 },
         { x: 80000, y: 9.5682 }
     ];
 
